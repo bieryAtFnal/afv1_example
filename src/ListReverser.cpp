@@ -37,6 +37,7 @@ ListReverser::ListReverser(const std::string& name)
   register_command("configure", &ListReverser::do_configure);
   register_command("start", &ListReverser::do_start);
   register_command("stop", &ListReverser::do_stop);
+  register_command("unconfigure", &ListReverser::do_unconfigure);
 }
 
 void
@@ -72,6 +73,13 @@ ListReverser::do_stop([[maybe_unused]] const std::vector<std::string>& args)
   thread_.stop_working_thread_();
   ERS_INFO(get_name() << " successfully stopped");
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_stop() method";
+}
+
+void
+ListReverser::do_unconfigure([[maybe_unused]] const std::vector<std::string>& args)
+{
+  TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_unconfigure() method";
+  TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_unconfigure() method";
 }
 
 /**

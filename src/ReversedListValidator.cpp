@@ -37,6 +37,7 @@ ReversedListValidator::ReversedListValidator(const std::string& name)
   register_command("configure", &ReversedListValidator::do_configure);
   register_command("start", &ReversedListValidator::do_start);
   register_command("stop", &ReversedListValidator::do_stop);
+  register_command("unconfigure", &ReversedListValidator::do_unconfigure);
 }
 
 void
@@ -71,6 +72,13 @@ ReversedListValidator::do_stop([[maybe_unused]] const std::vector<std::string>& 
   thread_.stop_working_thread_();
   ERS_INFO(get_name() << " successfully stopped");
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_stop() method";
+}
+
+void
+ReversedListValidator::do_unconfigure([[maybe_unused]] const std::vector<std::string>& args)
+{
+  TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_unconfigure() method";
+  TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_unconfigure() method";
 }
 
 /**

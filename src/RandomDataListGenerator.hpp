@@ -54,6 +54,7 @@ private:
   void do_configure(const std::vector<std::string>& args);
   void do_start(const std::vector<std::string>& args);
   void do_stop(const std::vector<std::string>& args);
+  void do_unconfigure(const std::vector<std::string>& args);
 
   // Threading
   dunedaq::appfwk::ThreadHelper thread_;
@@ -65,6 +66,9 @@ private:
   size_t nIntsPerList_;
   size_t waitBetweenSendsMsec_;
   std::vector<std::string> outputQueueNames_;
+
+  const size_t REASONABLE_DEFAULT_INTSPERLIST = 4;
+  const size_t REASONABLE_DEFAULT_MSECBETWEENSENDS = 1000;
 };
 } // namespace afv1_example
 

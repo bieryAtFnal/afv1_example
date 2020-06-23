@@ -32,13 +32,14 @@ RandomDataListGenerator::RandomDataListGenerator(const std::string& name)
   , thread_(std::bind(&RandomDataListGenerator::do_work, this))
   , outputQueues_()
   , queueTimeout_(100)
-  , nIntsPerList_(4)
-  , waitBetweenSendsMsec_(1000)
+  , nIntsPerList_(REASONABLE_DEFAULT_INTSPERLIST)
+  , waitBetweenSendsMsec_(REASONABLE_DEFAULT_MSECBETWEENSENDS)
   , outputQueueNames_()
 {
   register_command("configure", &RandomDataListGenerator::do_configure);
   register_command("start",  &RandomDataListGenerator::do_start);
   register_command("stop",  &RandomDataListGenerator::do_stop);
+  register_command("unconfigure",  &RandomDataListGenerator::do_unconfigure);
 }
 
 void RandomDataListGenerator::init()
@@ -56,8 +57,8 @@ void
 RandomDataListGenerator::do_configure([[maybe_unused]] const std::vector<std::string>& args)
 {
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_configure() method";
-  nIntsPerList_ = get_config().value<size_t>("nIntsPerList", 4);
-  waitBetweenSendsMsec_ = get_config().value<size_t>("waitBetweenSendsMsec", 1000);
+  nIntsPerList_ = get_config().value<size_t>("nIntsPerList", static_cast<size_t>(REASONABLE_DEFAULT_INTSPERLIST));
+  waitBetweenSendsMsec_ = get_config().value<size_t>("waitBetweenSendsMsec", static_cast<size_t>(REASONABLE_DEFAULT_MSECBETWEENSENDS));
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_configure() method";
 }
 
@@ -77,6 +78,15 @@ RandomDataListGenerator::do_stop([[maybe_unused]] const std::vector<std::string>
   thread_.stop_working_thread_();
   ERS_INFO(get_name() << " successfully stopped");
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_stop() method";
+}
+
+void
+RandomDataListGenerator::do_unconfigure([[maybe_unused]] const std::vector<std::string>& args)
+{
+  TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_unconfigure() method";
+  nIntsPerList_ = REASONABLE_DEFAULT_INTSPERLIST;
+  waitBetweenSendsMsec_ = REASONABLE_DEFAULT_MSECBETWEENSENDS;
+  TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_unconfigure() method";
 }
 
 /**
