@@ -10,8 +10,8 @@
  * received with this code.
  */
 
-#ifndef KURTTEST_SRC_LISTREVERSER_HPP_
-#define KURTTEST_SRC_LISTREVERSER_HPP_
+#ifndef AFV1_EXAMPLE_SRC_LISTREVERSER_HPP_
+#define AFV1_EXAMPLE_SRC_LISTREVERSER_HPP_
 
 #include "appfwk/DAQModule.hpp"
 #include "appfwk/DAQSink.hpp"
@@ -71,4 +71,4 @@ private:
 } // namespace afv1_example
 } // namespace dunedaq
 
-#endif // KURTTEST_SRC_LISTREVERSER_HPP_
+#endif // AFV1_EXAMPLE_SRC_LISTREVERSER_HPP_

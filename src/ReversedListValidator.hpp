@@ -11,8 +11,8 @@
  * received with this code.
  */
 
-#ifndef KURTTEST_SRC_REVERSEDLISTVALIDATOR_HPP_
-#define KURTTEST_SRC_REVERSEDLISTVALIDATOR_HPP_
+#ifndef AFV1_EXAMPLE_SRC_REVERSEDLISTVALIDATOR_HPP_
+#define AFV1_EXAMPLE_SRC_REVERSEDLISTVALIDATOR_HPP_
 
 #include "appfwk/DAQModule.hpp"
 #include "appfwk/DAQSource.hpp"
@@ -70,4 +70,4 @@ private:
 } // namespace afv1_example
 } // namespace dunedaq
 
-#endif // KURTTEST_SRC_REVERSEDLISTVALIDATOR_HPP_
+#endif // AFV1_EXAMPLE_SRC_REVERSEDLISTVALIDATOR_HPP_

@@ -9,8 +9,8 @@
  * received with this code.
  */
 
-#ifndef KURTTEST_SRC_COMMONISSUES_HPP_
-#define KURTTEST_SRC_COMMONISSUES_HPP_
+#ifndef AFV1_EXAMPLE_SRC_COMMONISSUES_HPP_
+#define AFV1_EXAMPLE_SRC_COMMONISSUES_HPP_
 
 #include "appfwk/DAQModule.hpp"
 #include <ers/Issue.h>
@@ -33,4 +33,4 @@ ERS_DECLARE_ISSUE_BASE(afv1_example,
 
 } // namespace dunedaq
 
-#endif // KURTTEST_SRC_COMMONISSUES_HPP_
+#endif // AFV1_EXAMPLE_SRC_COMMONISSUES_HPP_
