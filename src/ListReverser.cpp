@@ -24,7 +24,7 @@
 #define TLVL_LIST_REVERSAL 15
 
 namespace dunedaq {
-namespace KurtTest {
+namespace afv1_example {
 
 ListReverser::ListReverser(const std::string& name)
   : DAQModule(name)
@@ -158,7 +158,7 @@ ListReverser::do_work()
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_work() method";
 }
 
-} // namespace KurtTest
+} // namespace afv1_example
 } // namespace dunedaq
 
-DEFINE_DUNE_DAQ_MODULE(dunedaq::KurtTest::ListReverser)
+DEFINE_DUNE_DAQ_MODULE(dunedaq::afv1_example::ListReverser)

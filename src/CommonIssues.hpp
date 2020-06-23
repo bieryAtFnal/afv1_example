@@ -17,14 +17,14 @@
 
 namespace dunedaq {
 
-ERS_DECLARE_ISSUE_BASE(KurtTest,
+ERS_DECLARE_ISSUE_BASE(afv1_example,
                        ProgressUpdate,
                        appfwk::GeneralDAQModuleIssue,
                        name << ": " << message,
                        ERS_EMPTY,
                        ((std::string)name)((std::string)message))
 
-ERS_DECLARE_ISSUE_BASE(KurtTest,
+ERS_DECLARE_ISSUE_BASE(afv1_example,
                        InvalidQueueFatalError,
                        appfwk::GeneralDAQModuleIssue,
                        name << ": The " << queueType << " queue was not valid when it was needed. Has initialization been successfully completed?",

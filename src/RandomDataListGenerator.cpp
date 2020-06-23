@@ -25,7 +25,7 @@
 #define TLVL_LIST_GENERATION 15
 
 namespace dunedaq {
-namespace KurtTest {
+namespace afv1_example {
 
 RandomDataListGenerator::RandomDataListGenerator(const std::string& name)
   : dunedaq::appfwk::DAQModule(name)
@@ -164,7 +164,7 @@ RandomDataListGenerator::do_work()
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_work() method";
 }
 
-} // namespace KurtTest 
+} // namespace afv1_example 
 } // namespace dunedaq
 
-DEFINE_DUNE_DAQ_MODULE(dunedaq::KurtTest::RandomDataListGenerator)
+DEFINE_DUNE_DAQ_MODULE(dunedaq::afv1_example::RandomDataListGenerator)

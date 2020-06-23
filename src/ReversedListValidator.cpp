@@ -25,7 +25,7 @@
 #define TLVL_LIST_VALIDATION 15
 
 namespace dunedaq {
-namespace KurtTest {
+namespace afv1_example {
 
 ReversedListValidator::ReversedListValidator(const std::string& name)
   : DAQModule(name)
@@ -171,7 +171,7 @@ ReversedListValidator::do_work()
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_work() method";
 }
 
-} // namespace KurtTest
+} // namespace afv1_example
 } // namespace dunedaq
 
-DEFINE_DUNE_DAQ_MODULE(dunedaq::KurtTest::ReversedListValidator)
+DEFINE_DUNE_DAQ_MODULE(dunedaq::afv1_example::ReversedListValidator)

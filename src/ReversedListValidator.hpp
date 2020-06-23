@@ -25,7 +25,7 @@
 #include <vector>
 
 namespace dunedaq {
-namespace KurtTest {
+namespace afv1_example {
 
 /**
  * @brief ReversedListValidator reads lists of integers from two queues
@@ -66,7 +66,7 @@ private:
   std::unique_ptr<dunedaq::appfwk::DAQSource<std::vector<int>>> originalDataQueue_;
   std::chrono::milliseconds queueTimeout_;
 };
-} // namespace KurtTest
+} // namespace afv1_example
 } // namespace dunedaq
 
 #endif // KURTTEST_SRC_REVERSEDLISTVALIDATOR_HPP_

@@ -25,7 +25,7 @@
 #include <vector>
 
 namespace dunedaq {
-namespace KurtTest {
+namespace afv1_example {
 
 /**
  * @brief ListReverser reads lists of integers from one queue,
@@ -67,7 +67,7 @@ private:
   std::chrono::milliseconds queueTimeout_;
   std::string outputQueueName_;
 };
-} // namespace KurtTest
+} // namespace afv1_example
 } // namespace dunedaq
 
 #endif // KURTTEST_SRC_LISTREVERSER_HPP_

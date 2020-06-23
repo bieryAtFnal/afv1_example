@@ -23,7 +23,7 @@
 #include <vector>
 
 namespace dunedaq {
-namespace KurtTest {
+namespace afv1_example {
 
 /**
  * @brief RandomDataListGenerator creates vectors of ints and writes
@@ -66,9 +66,9 @@ private:
   size_t waitBetweenSendsMsec_;
   std::vector<std::string> outputQueueNames_;
 };
-} // namespace KurtTest
+} // namespace afv1_example
 
-ERS_DECLARE_ISSUE_BASE(KurtTest,
+ERS_DECLARE_ISSUE_BASE(afv1_example,
                        NoOutputQueuesAvailableWarning,
                        appfwk::GeneralDAQModuleIssue,
                        name << ": No output queues were available, so the generated list of integers will be dropped. Has initialization been successfully completed?",
