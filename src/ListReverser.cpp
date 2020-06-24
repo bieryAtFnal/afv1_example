@@ -42,9 +42,33 @@ void
 ListReverser::init()
 {
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering init() method";
-  inputQueue_.reset(new dunedaq::appfwk::DAQSource<std::vector<int>>(get_config()["input"].get<std::string>()));
+  try
+  {
+    inputQueue_.reset(new dunedaq::appfwk::DAQSource<std::vector<int>>(get_config()["input"].get<std::string>()));
+  }
+  catch (const ers::Issue& excpt)
+  {
+    ers::error(excpt);
+  }
+  if (inputQueue_.get() == nullptr)
+  {
+    throw InvalidQueueFatalError(ERS_HERE, get_name(), "input");
+  }
+
   outputQueueName_ = get_config()["output"].get<std::string>();
-  outputQueue_.reset(new dunedaq::appfwk::DAQSink<std::vector<int>>(outputQueueName_));
+  try
+  {
+    outputQueue_.reset(new dunedaq::appfwk::DAQSink<std::vector<int>>(outputQueueName_));
+  }
+  catch (const ers::Issue& excpt)
+  {
+    ers::error(excpt);
+  }
+  if (outputQueue_.get() == nullptr)
+  {
+    throw InvalidQueueFatalError(ERS_HERE, get_name(), "output");
+  }
+
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting init() method";
 }
 
@@ -94,20 +118,7 @@ ListReverser::do_work()
   int sentCount = 0;
   std::vector<int> workingVector;
 
-  // being cautious - make sure queues are defined
-  bool queuesAreDefined = true;
-  if (inputQueue_.get() == nullptr)
-  {
-    ers::fatal(InvalidQueueFatalError(ERS_HERE, get_name(), "input"));
-    queuesAreDefined = false;
-  }
-  if (outputQueue_.get() == nullptr)
-  {
-    ers::fatal(InvalidQueueFatalError(ERS_HERE, get_name(), "output"));
-    queuesAreDefined = false;
-  }
-
-  while (queuesAreDefined && thread_.thread_running()) {
+  while (thread_.thread_running()) {
     TLOG(TLVL_LIST_REVERSAL) << get_name() << ": Going to receive data from input queue";
     if (!inputQueue_->pop(workingVector, queueTimeout_)) {continue;}
 

@@ -48,8 +48,16 @@ void RandomDataListGenerator::init()
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering init() method";
   for (auto& output : get_config()["outputs"]) {
     std::string outputQueueName = output.get<std::string>();
-    outputQueues_.emplace_back(new dunedaq::appfwk::DAQSink<std::vector<int>>(outputQueueName));
     outputQueueNames_.emplace_back(outputQueueName);
+    try
+    {
+      outputQueues_.emplace_back(new dunedaq::appfwk::DAQSink<std::vector<int>>(outputQueueName));
+    }
+    catch (const ers::Issue& excpt)
+    {
+      ers::error(excpt);
+      throw InvalidQueueFatalError(ERS_HERE, get_name(), outputQueueName);
+    }
   }
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting init() method";
 }

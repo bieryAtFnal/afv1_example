@@ -42,8 +42,33 @@ void
 ReversedListValidator::init()
 {
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering init() method";
-  reversedDataQueue_.reset(new dunedaq::appfwk::DAQSource<std::vector<int>>(get_config()["reversed_data_input"].get<std::string>()));
-  originalDataQueue_.reset(new dunedaq::appfwk::DAQSource<std::vector<int>>(get_config()["original_data_input"].get<std::string>()));
+
+  try
+  {
+    reversedDataQueue_.reset(new dunedaq::appfwk::DAQSource<std::vector<int>>(get_config()["reversed_data_input"].get<std::string>()));
+  }
+  catch (const ers::Issue& excpt)
+  {
+    ers::error(excpt);
+  }
+  if (reversedDataQueue_.get() == nullptr)
+  {
+    throw InvalidQueueFatalError(ERS_HERE, get_name(), "reversed data input");
+  }
+
+  try
+  {
+    originalDataQueue_.reset(new dunedaq::appfwk::DAQSource<std::vector<int>>(get_config()["original_data_input"].get<std::string>()));
+  }
+  catch (const ers::Issue& excpt)
+  {
+    ers::error(excpt);
+  }
+  if (originalDataQueue_.get() == nullptr)
+  {
+    throw InvalidQueueFatalError(ERS_HERE, get_name(), "original data input");
+  }
+
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting init() method";
 }
 
@@ -95,20 +120,7 @@ ReversedListValidator::do_work()
   std::vector<int> reversedData;
   std::vector<int> originalData;
 
-  // being cautious - make sure queues are defined
-  bool queuesAreDefined = true;
-  if (reversedDataQueue_.get() == nullptr)
-  {
-    ers::fatal(InvalidQueueFatalError(ERS_HERE, get_name(), "reversed data"));
-    queuesAreDefined = false;
-  }
-  if (originalDataQueue_.get() == nullptr)
-  {
-    ers::fatal(InvalidQueueFatalError(ERS_HERE, get_name(), "original data"));
-    queuesAreDefined = false;
-  }
-
-  while (queuesAreDefined && thread_.thread_running()) {
+  while (thread_.thread_running()) {
     TLOG(TLVL_LIST_VALIDATION) << get_name() << ": Going to receive data from the reversed list queue";
     if (!reversedDataQueue_->pop(reversedData, queueTimeout_)) {continue;}
     ++reversedCount;
