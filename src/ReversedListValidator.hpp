@@ -66,6 +66,14 @@ private:
   std::chrono::milliseconds queueTimeout_;
 };
 } // namespace afv1_example
+
+ERS_DECLARE_ISSUE_BASE(afv1_example,
+                       DataMismatchError,
+                       appfwk::GeneralDAQModuleIssue,
+                       "Data mismatch when validating lists: doubly-reversed list contents = " << revContents << ", original list contents = " << origContents,
+                       ((std::string)name),
+                       ((std::string)revContents)((std::string)origContents))
+
 } // namespace dunedaq
 
 #endif // AFV1_EXAMPLE_SRC_REVERSEDLISTVALIDATOR_HPP_

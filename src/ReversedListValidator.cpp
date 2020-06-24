@@ -155,13 +155,17 @@ ReversedListValidator::do_work()
                << " and reversed contents " << reversedData << ". ";
       ers::debug(ProgressUpdate(ERS_HERE, get_name(), oss_prog.str()));
 
-      TLOG(TLVL_LIST_VALIDATION) << get_name() << ": Reversing the copy of the original data";
-      std::reverse(originalData.begin(), originalData.end());
+      TLOG(TLVL_LIST_VALIDATION) << get_name() << ": Re-reversing the reversed list so that it can be compared to the original list";
+      std::reverse(reversedData.begin(), reversedData.end());
 
-      TLOG(TLVL_LIST_VALIDATION) << get_name() << ": Comparing the two reversed lists";
-      if (originalData != reversedData)  // "original" has been reversed at this point
+      TLOG(TLVL_LIST_VALIDATION) << get_name() << ": Comparing the doubly-reversed list with the original list";
+      if (reversedData != originalData)
       {
-        //ers::error();
+        std::ostringstream oss_rev;
+        oss_rev << reversedData;
+        std::ostringstream oss_orig;
+        oss_orig << originalData;
+        ers::error(DataMismatchError(ERS_HERE, get_name(), oss_rev.str(), oss_orig.str()));
         ++failureCount;
       }
     }
