@@ -75,9 +75,9 @@ private:
 ERS_DECLARE_ISSUE_BASE(afv1_example,
                        NoOutputQueuesAvailableWarning,
                        appfwk::GeneralDAQModuleIssue,
-                       name << ": No output queues were available, so the generated list of integers will be dropped. Has initialization been successfully completed?",
-                       ERS_EMPTY,
-                       ((std::string)name))
+                       "No output queues were available, so the generated list of integers will be dropped. Has initialization been successfully completed?",
+                       ((std::string)name),
+                       ERS_EMPTY)
 
 } // namespace dunedaq
 
