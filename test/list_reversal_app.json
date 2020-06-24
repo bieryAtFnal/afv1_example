@@ -1,15 +1,15 @@
 {
   "queues": {
     "primaryDataQueue": {
-      "size": 10,
+      "capacity": 10,
       "kind": "FollySPSCQueue"
     },
     "reversedDataQueue": {
-      "size": 10,
+      "capacity": 10,
       "kind": "FollySPSCQueue"
     },
     "dataCopyQueue": {
-      "size": 10,
+      "capacity": 10,
       "kind": "FollySPSCQueue"
     }
   },
