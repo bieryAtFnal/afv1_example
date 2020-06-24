@@ -63,7 +63,7 @@ ListReverser::init()
 }
 
 void
-ListReverser::do_start([[maybe_unused]] const std::vector<std::string>& args)
+ListReverser::do_start(const std::vector<std::string>& /*args*/)
 {
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_start() method";
   thread_.start_working_thread();
@@ -72,7 +72,7 @@ ListReverser::do_start([[maybe_unused]] const std::vector<std::string>& args)
 }
 
 void
-ListReverser::do_stop([[maybe_unused]] const std::vector<std::string>& args)
+ListReverser::do_stop(const std::vector<std::string>& /*args*/)
 {
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_stop() method";
   thread_.stop_working_thread();

@@ -59,7 +59,7 @@ void RandomDataListGenerator::init()
 }
 
 void
-RandomDataListGenerator::do_configure([[maybe_unused]] const std::vector<std::string>& args)
+RandomDataListGenerator::do_configure(const std::vector<std::string>& /*args*/)
 {
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_configure() method";
   nIntsPerList_ = get_config().value<size_t>("nIntsPerList", static_cast<size_t>(REASONABLE_DEFAULT_INTSPERLIST));
@@ -68,7 +68,7 @@ RandomDataListGenerator::do_configure([[maybe_unused]] const std::vector<std::st
 }
 
 void
-RandomDataListGenerator::do_start([[maybe_unused]] const std::vector<std::string>& args)
+RandomDataListGenerator::do_start(const std::vector<std::string>& /*args*/)
 {
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_start() method";
   thread_.start_working_thread();
@@ -77,7 +77,7 @@ RandomDataListGenerator::do_start([[maybe_unused]] const std::vector<std::string
 }
 
 void
-RandomDataListGenerator::do_stop([[maybe_unused]] const std::vector<std::string>& args)
+RandomDataListGenerator::do_stop(const std::vector<std::string>& /*args*/)
 {
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_stop() method";
   thread_.stop_working_thread();
@@ -86,7 +86,7 @@ RandomDataListGenerator::do_stop([[maybe_unused]] const std::vector<std::string>
 }
 
 void
-RandomDataListGenerator::do_unconfigure([[maybe_unused]] const std::vector<std::string>& args)
+RandomDataListGenerator::do_unconfigure(const std::vector<std::string>& /*args*/)
 {
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_unconfigure() method";
   nIntsPerList_ = REASONABLE_DEFAULT_INTSPERLIST;
