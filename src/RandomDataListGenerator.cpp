@@ -32,14 +32,15 @@ RandomDataListGenerator::RandomDataListGenerator(const std::string& name)
   , thread_(std::bind(&RandomDataListGenerator::do_work, this))
   , outputQueues_()
   , queueTimeout_(100)
-  , nIntsPerList_(REASONABLE_DEFAULT_INTSPERLIST)
-  , waitBetweenSendsMsec_(REASONABLE_DEFAULT_MSECBETWEENSENDS)
   , outputQueueNames_()
 {
   register_command("configure", &RandomDataListGenerator::do_configure);
   register_command("start",  &RandomDataListGenerator::do_start);
   register_command("stop",  &RandomDataListGenerator::do_stop);
   register_command("unconfigure",  &RandomDataListGenerator::do_unconfigure);
+
+  nIntsPerList_ = REASONABLE_DEFAULT_INTSPERLIST;
+  waitBetweenSendsMsec_ = REASONABLE_DEFAULT_MSECBETWEENSENDS;
 }
 
 void RandomDataListGenerator::init()
