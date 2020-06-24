@@ -34,10 +34,8 @@ ReversedListValidator::ReversedListValidator(const std::string& name)
   , originalDataQueue_(nullptr)
   , queueTimeout_(100)
 {
-  register_command("configure", &ReversedListValidator::do_configure);
   register_command("start", &ReversedListValidator::do_start);
   register_command("stop", &ReversedListValidator::do_stop);
-  register_command("unconfigure", &ReversedListValidator::do_unconfigure);
 }
 
 void
@@ -47,13 +45,6 @@ ReversedListValidator::init()
   reversedDataQueue_.reset(new dunedaq::appfwk::DAQSource<std::vector<int>>(get_config()["reversed_data_input"].get<std::string>()));
   originalDataQueue_.reset(new dunedaq::appfwk::DAQSource<std::vector<int>>(get_config()["original_data_input"].get<std::string>()));
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting init() method";
-}
-
-void
-ReversedListValidator::do_configure([[maybe_unused]] const std::vector<std::string>& args)
-{
-  TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_configure() method";
-  TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_configure() method";
 }
 
 void
@@ -72,13 +63,6 @@ ReversedListValidator::do_stop([[maybe_unused]] const std::vector<std::string>& 
   thread_.stop_working_thread_();
   ERS_LOG(get_name() << " successfully stopped");
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_stop() method";
-}
-
-void
-ReversedListValidator::do_unconfigure([[maybe_unused]] const std::vector<std::string>& args)
-{
-  TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_unconfigure() method";
-  TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_unconfigure() method";
 }
 
 /**

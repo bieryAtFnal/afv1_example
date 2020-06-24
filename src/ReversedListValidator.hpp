@@ -53,10 +53,8 @@ public:
 
 private:
   // Commands
-  void do_configure(const std::vector<std::string>& args);
   void do_start(const std::vector<std::string>& args);
   void do_stop(const std::vector<std::string>& args);
-  void do_unconfigure(const std::vector<std::string>& args);
 
   // Threading
   dunedaq::appfwk::ThreadHelper thread_;
