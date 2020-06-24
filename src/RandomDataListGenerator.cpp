@@ -29,7 +29,7 @@ namespace afv1_example {
 
 RandomDataListGenerator::RandomDataListGenerator(const std::string& name)
   : dunedaq::appfwk::DAQModule(name)
-  , thread_(std::bind(&RandomDataListGenerator::do_work, this))
+  , thread_(std::bind(&RandomDataListGenerator::do_work, this, std::placeholders::_1))
   , outputQueues_()
   , queueTimeout_(100)
 {
@@ -116,13 +116,13 @@ operator<<(std::ostream& t, std::vector<int> ints)
 }
 
 void
-RandomDataListGenerator::do_work()
+RandomDataListGenerator::do_work(std::atomic<bool>& running_flag)
 {
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_work() method";
   size_t generatedCount = 0;
   size_t sentCount = 0;
 
-  while (thread_.thread_running()) {
+  while (running_flag.load()) {
     TLOG(TLVL_LIST_GENERATION) << get_name() << ": Creating list of length " << nIntsPerList_;
     std::vector<int> theList(nIntsPerList_);
 
@@ -138,12 +138,11 @@ RandomDataListGenerator::do_work()
     ers::debug(ProgressUpdate(ERS_HERE, get_name(), oss_prog.str()));
 
     TLOG(TLVL_LIST_GENERATION) << get_name() << ": Pushing list onto " << outputQueues_.size() << " outputQueues";
-    int tmpIdx = 0;
     for (auto& outQueue : outputQueues_)
     {
       std::string thisQueueName = outQueue->get_name();
       bool successfullyWasSent = false;
-      while (!successfullyWasSent && thread_.thread_running())
+      while (!successfullyWasSent && running_flag.load())
       {
         TLOG(TLVL_LIST_GENERATION) << get_name() << ": Pushing the generated list onto queue " << thisQueueName;
         try

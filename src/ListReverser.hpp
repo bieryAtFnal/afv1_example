@@ -58,7 +58,7 @@ private:
 
   // Threading
   dunedaq::appfwk::ThreadHelper thread_;
-  void do_work();
+  void do_work(std::atomic<bool>&);
 
   // Configuration
   std::unique_ptr<dunedaq::appfwk::DAQSource<std::vector<int>>> inputQueue_;

@@ -28,7 +28,7 @@ namespace afv1_example {
 
 ListReverser::ListReverser(const std::string& name)
   : DAQModule(name)
-  , thread_(std::bind(&ListReverser::do_work, this))
+  , thread_(std::bind(&ListReverser::do_work, this, std::placeholders::_1))
   , inputQueue_(nullptr)
   , outputQueue_(nullptr)
   , queueTimeout_(100)
@@ -101,14 +101,14 @@ operator<<(std::ostream& t, std::vector<int> ints)
 }
 
 void
-ListReverser::do_work()
+ListReverser::do_work(std::atomic<bool>& running_flag)
 {
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_work() method";
   int receivedCount = 0;
   int sentCount = 0;
   std::vector<int> workingVector;
 
-  while (thread_.thread_running()) {
+  while (running_flag.load()) {
     TLOG(TLVL_LIST_REVERSAL) << get_name() << ": Going to receive data from input queue";
     try
     {
@@ -132,7 +132,7 @@ ListReverser::do_work()
     ers::debug(ProgressUpdate(ERS_HERE, get_name(), oss_prog.str()));
 
     bool successfullyWasSent = false;
-    while (!successfullyWasSent && thread_.thread_running())
+    while (!successfullyWasSent && running_flag.load())
     {
       TLOG(TLVL_LIST_REVERSAL) << get_name() << ": Pushing the reversed list onto the output queue";
       try

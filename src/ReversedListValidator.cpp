@@ -29,7 +29,7 @@ namespace afv1_example {
 
 ReversedListValidator::ReversedListValidator(const std::string& name)
   : DAQModule(name)
-  , thread_(std::bind(&ReversedListValidator::do_work, this))
+  , thread_(std::bind(&ReversedListValidator::do_work, this, std::placeholders::_1))
   , reversedDataQueue_(nullptr)
   , originalDataQueue_(nullptr)
   , queueTimeout_(100)
@@ -103,7 +103,7 @@ operator<<(std::ostream& t, std::vector<int> ints)
 }
 
 void
-ReversedListValidator::do_work()
+ReversedListValidator::do_work(std::atomic<bool>& running_flag)
 {
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_work() method";
   int reversedCount = 0;
@@ -112,7 +112,7 @@ ReversedListValidator::do_work()
   std::vector<int> reversedData;
   std::vector<int> originalData;
 
-  while (thread_.thread_running()) {
+  while (running_flag.load()) {
     TLOG(TLVL_LIST_VALIDATION) << get_name() << ": Going to receive data from the reversed list queue";
     try
     {
@@ -130,7 +130,7 @@ ReversedListValidator::do_work()
                              << ". It has size " << reversedData.size()
                              << ". Now going to receive data from the original data queue.";
     bool originalWasSuccessfullyReceived = false;
-    while (!originalWasSuccessfullyReceived && thread_.thread_running())
+    while (!originalWasSuccessfullyReceived && running_flag.load())
     {
       TLOG(TLVL_LIST_VALIDATION) << get_name() << ": Popping the next element off the original data queue";
       try
