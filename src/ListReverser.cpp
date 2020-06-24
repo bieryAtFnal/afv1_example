@@ -93,7 +93,6 @@ ListReverser::do_work()
   int receivedCount = 0;
   int sentCount = 0;
   std::vector<int> workingVector;
-  std::ostringstream oss;
 
   // being cautious - make sure queues are defined
   bool queuesAreDefined = true;
@@ -117,10 +116,10 @@ ListReverser::do_work()
                              << ". It has size " << workingVector.size() << ". Reversing its contents";
     std::reverse(workingVector.begin(), workingVector.end());
 
-    oss << "Reversed list #" << receivedCount << ", new contents " << workingVector
-        << " and size " << workingVector.size() << ". ";
-    ers::debug(ProgressUpdate(ERS_HERE, get_name(), oss.str()));
-    oss.str("");
+    std::ostringstream oss_prog;
+    oss_prog << "Reversed list #" << receivedCount << ", new contents " << workingVector
+             << " and size " << workingVector.size() << ". ";
+    ers::debug(ProgressUpdate(ERS_HERE, get_name(), oss_prog.str()));
 
     bool successfullyWasSent = false;
     while (!successfullyWasSent && thread_.thread_running())
@@ -134,19 +133,19 @@ ListReverser::do_work()
       }
       catch (const dunedaq::appfwk::QueueTimeoutExpired& excpt)
       {
-        oss << "push to output queue \"" << outputQueueName_ << "\"";
-        ers::warning(dunedaq::appfwk::QueueTimeoutExpired(ERS_HERE, get_name(), oss.str(),
+        std::ostringstream oss_warn;
+        oss_warn << "push to output queue \"" << outputQueueName_ << "\"";
+        ers::warning(dunedaq::appfwk::QueueTimeoutExpired(ERS_HERE, get_name(), oss_warn.str(),
                      std::chrono::duration_cast<std::chrono::milliseconds>(queueTimeout_).count()));
-        oss.str("");
       }
     }
     TLOG(TLVL_LIST_REVERSAL) << get_name() << ": End of do_work loop";
   }
 
-  oss << ": Exiting do_work() method, received " << receivedCount << " lists, and successfully sent "
-      << sentCount << ". ";
-  ers::info(ProgressUpdate(ERS_HERE, get_name(), oss.str()));
-  oss.str("");
+  std::ostringstream oss_summ;
+  oss_summ << ": Exiting do_work() method, received " << receivedCount
+           << " lists, and successfully sent " << sentCount << ". ";
+  ers::info(ProgressUpdate(ERS_HERE, get_name(), oss_summ.str()));
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_work() method";
 }
 

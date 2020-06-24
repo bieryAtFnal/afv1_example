@@ -116,7 +116,6 @@ RandomDataListGenerator::do_work()
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_work() method";
   size_t generatedCount = 0;
   size_t sentCount = 0;
-  std::ostringstream oss;
 
   while (thread_.thread_running()) {
     TLOG(TLVL_LIST_GENERATION) << get_name() << ": Creating list of length " << nIntsPerList_;
@@ -128,10 +127,10 @@ RandomDataListGenerator::do_work()
       theList[idx] = (rand() % 1000) + 1;
     }
     generatedCount++;
-    oss << "Generated list #" << generatedCount << " with contents " << theList
-        << " and size " << theList.size() << ". ";
-    ers::debug(ProgressUpdate(ERS_HERE, get_name(), oss.str()));
-    oss.str("");
+    std::ostringstream oss_prog;
+    oss_prog << "Generated list #" << generatedCount << " with contents " << theList
+             << " and size " << theList.size() << ". ";
+    ers::debug(ProgressUpdate(ERS_HERE, get_name(), oss_prog.str()));
 
     TLOG(TLVL_LIST_GENERATION) << get_name() << ": Pushing list onto " << outputQueues_.size() << " outputQueues";
     int tmpIdx = 0;
@@ -150,10 +149,10 @@ RandomDataListGenerator::do_work()
         }
         catch (const dunedaq::appfwk::QueueTimeoutExpired& excpt)
         {
-          oss << "push to output queue \"" << thisQueueName << "\"";
-          ers::warning(dunedaq::appfwk::QueueTimeoutExpired(ERS_HERE, get_name(), oss.str(),
+          std::ostringstream oss_warn;
+          oss_warn << "push to output queue \"" << thisQueueName << "\"";
+          ers::warning(dunedaq::appfwk::QueueTimeoutExpired(ERS_HERE, get_name(), oss_warn.str(),
                        std::chrono::duration_cast<std::chrono::milliseconds>(queueTimeout_).count()));
-          oss.str("");
         }
       }
     }
@@ -167,10 +166,10 @@ RandomDataListGenerator::do_work()
     TLOG(TLVL_LIST_GENERATION) << get_name() << ": End of do_work loop";
   }
 
-  oss << ": Exiting the do_work() method, generated " << generatedCount << " lists, and successfully sent "
-      << sentCount << " copies. ";
-  ers::info(ProgressUpdate(ERS_HERE, get_name(), oss.str()));
-  oss.str("");
+  std::ostringstream oss_summ;
+  oss_summ << ": Exiting the do_work() method, generated " << generatedCount
+           << " lists, and successfully sent " << sentCount << " copies. ";
+  ers::info(ProgressUpdate(ERS_HERE, get_name(), oss_summ.str()));
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_work() method";
 }
 

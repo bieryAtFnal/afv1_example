@@ -94,7 +94,6 @@ ReversedListValidator::do_work()
   int failureCount = 0;
   std::vector<int> reversedData;
   std::vector<int> originalData;
-  std::ostringstream oss;
 
   // being cautious - make sure queues are defined
   bool queuesAreDefined = true;
@@ -128,19 +127,19 @@ ReversedListValidator::do_work()
       }
       else
       {
-        oss << "pop from original data queue";
-        ers::warning(dunedaq::appfwk::QueueTimeoutExpired(ERS_HERE, get_name(), oss.str(),
+        std::ostringstream oss_warn;
+        oss_warn << "pop from original data queue";
+        ers::warning(dunedaq::appfwk::QueueTimeoutExpired(ERS_HERE, get_name(), oss_warn.str(),
                      std::chrono::duration_cast<std::chrono::milliseconds>(queueTimeout_).count()));
-        oss.str("");
       }
     }
 
     if (originalWasSuccessfullyReceived)
     {
-      oss << "Validating list #" << reversedCount << ", original contents " << originalData
-          << " and reversed contents " << reversedData << ". ";
-      ers::debug(ProgressUpdate(ERS_HERE, get_name(), oss.str()));
-      oss.str("");
+      std::ostringstream oss_prog;
+      oss_prog << "Validating list #" << reversedCount << ", original contents " << originalData
+               << " and reversed contents " << reversedData << ". ";
+      ers::debug(ProgressUpdate(ERS_HERE, get_name(), oss_prog.str()));
 
       TLOG(TLVL_LIST_VALIDATION) << get_name() << ": Reversing the copy of the original data";
       std::reverse(originalData.begin(), originalData.end());
@@ -155,11 +154,11 @@ ReversedListValidator::do_work()
     TLOG(TLVL_LIST_VALIDATION) << get_name() << ": End of do_work loop";
   }
 
-  oss << ": Exiting do_work() method, received " << reversedCount << " reversed lists, "
-      << "compared " << comparisonCount << " of them to their original data, and found "
-      << failureCount << " mismatches. ";
-  ers::info(ProgressUpdate(ERS_HERE, get_name(), oss.str()));
-  oss.str("");
+  std::ostringstream oss_summ;
+  oss_summ << ": Exiting do_work() method, received " << reversedCount << " reversed lists, "
+           << "compared " << comparisonCount << " of them to their original data, and found "
+           << failureCount << " mismatches. ";
+  ers::info(ProgressUpdate(ERS_HERE, get_name(), oss_summ.str()));
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_work() method";
 }
 
