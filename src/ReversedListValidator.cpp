@@ -61,7 +61,7 @@ ReversedListValidator::do_start([[maybe_unused]] const std::vector<std::string>&
 {
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_start() method";
   thread_.start_working_thread_();
-  ERS_INFO(get_name() << " successfully started");
+  ERS_LOG(get_name() << " successfully started");
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_start() method";
 }
 
@@ -70,7 +70,7 @@ ReversedListValidator::do_stop([[maybe_unused]] const std::vector<std::string>& 
 {
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering do_stop() method";
   thread_.stop_working_thread_();
-  ERS_INFO(get_name() << " successfully stopped");
+  ERS_LOG(get_name() << " successfully stopped");
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_stop() method";
 }
 
