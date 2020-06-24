@@ -112,7 +112,16 @@ ListReverser::do_work()
 
   while (thread_.thread_running()) {
     TLOG(TLVL_LIST_REVERSAL) << get_name() << ": Going to receive data from input queue";
-    if (!inputQueue_->pop(workingVector, queueTimeout_)) {continue;}
+    try
+    {
+      inputQueue_->pop(workingVector, queueTimeout_);
+    }
+    catch (const dunedaq::appfwk::QueueTimeoutExpired& excpt)
+    {
+      // it is perfectly reasonable that there might be no data in the queue 
+      // some fraction of the times that we check, so we just continue on and try again
+      continue;
+    }
 
     ++receivedCount;
     TLOG(TLVL_LIST_REVERSAL) << get_name() << ": Received list #" << receivedCount

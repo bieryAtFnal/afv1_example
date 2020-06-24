@@ -114,7 +114,16 @@ ReversedListValidator::do_work()
 
   while (thread_.thread_running()) {
     TLOG(TLVL_LIST_VALIDATION) << get_name() << ": Going to receive data from the reversed list queue";
-    if (!reversedDataQueue_->pop(reversedData, queueTimeout_)) {continue;}
+    try
+    {
+      reversedDataQueue_->pop(reversedData, queueTimeout_);
+    }
+    catch (const dunedaq::appfwk::QueueTimeoutExpired& excpt)
+    {
+      // it is perfectly reasonable that there might be no reversed data in the queue 
+      // some fraction of the times that we check, so we just continue on and try again
+      continue;
+    }
     ++reversedCount;
 
     TLOG(TLVL_LIST_VALIDATION) << get_name() << ": Received reversed list #" << reversedCount
@@ -124,12 +133,13 @@ ReversedListValidator::do_work()
     while (!originalWasSuccessfullyReceived && thread_.thread_running())
     {
       TLOG(TLVL_LIST_VALIDATION) << get_name() << ": Popping the next element off the original data queue";
-      if (originalDataQueue_->pop(originalData, queueTimeout_))
+      try
       {
+        originalDataQueue_->pop(originalData, queueTimeout_);
         originalWasSuccessfullyReceived = true;
         ++comparisonCount;
       }
-      else
+      catch (const dunedaq::appfwk::QueueTimeoutExpired& excpt)
       {
         std::ostringstream oss_warn;
         oss_warn << "pop from original data queue";
