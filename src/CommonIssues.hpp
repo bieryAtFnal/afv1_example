@@ -27,7 +27,7 @@ ERS_DECLARE_ISSUE_BASE(afv1_example,
 ERS_DECLARE_ISSUE_BASE(afv1_example,
                        InvalidQueueFatalError,
                        appfwk::GeneralDAQModuleIssue,
-                       "The " << queueType << " queue was not successfully created. ",
+                       "The " << queueType << " queue was not successfully created.",
                        ((std::string)name),
                        ((std::string)queueType))
 

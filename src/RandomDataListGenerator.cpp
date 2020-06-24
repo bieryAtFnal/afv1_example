@@ -32,7 +32,6 @@ RandomDataListGenerator::RandomDataListGenerator(const std::string& name)
   , thread_(std::bind(&RandomDataListGenerator::do_work, this))
   , outputQueues_()
   , queueTimeout_(100)
-  , outputQueueNames_()
 {
   register_command("configure", &RandomDataListGenerator::do_configure);
   register_command("start",  &RandomDataListGenerator::do_start);
@@ -47,15 +46,13 @@ void RandomDataListGenerator::init()
 {
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Entering init() method";
   for (auto& output : get_config()["outputs"]) {
-    std::string outputQueueName = output.get<std::string>();
-    outputQueueNames_.emplace_back(outputQueueName);
     try
     {
-      outputQueues_.emplace_back(new dunedaq::appfwk::DAQSink<std::vector<int>>(outputQueueName));
+      outputQueues_.emplace_back(new dunedaq::appfwk::DAQSink<std::vector<int>>(output.get<std::string>()));
     }
     catch (const ers::Issue& excpt)
     {
-      throw InvalidQueueFatalError(ERS_HERE, get_name(), outputQueueName, excpt);
+      throw InvalidQueueFatalError(ERS_HERE, get_name(), output.get<std::string>(), excpt);
     }
   }
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting init() method";
@@ -144,7 +141,7 @@ RandomDataListGenerator::do_work()
     int tmpIdx = 0;
     for (auto& outQueue : outputQueues_)
     {
-      std::string thisQueueName = outputQueueNames_[tmpIdx++];
+      std::string thisQueueName = outQueue->get_name();
       bool successfullyWasSent = false;
       while (!successfullyWasSent && thread_.thread_running())
       {
@@ -176,7 +173,7 @@ RandomDataListGenerator::do_work()
 
   std::ostringstream oss_summ;
   oss_summ << ": Exiting the do_work() method, generated " << generatedCount
-           << " lists, and successfully sent " << sentCount << " copies. ";
+           << " lists and successfully sent " << sentCount << " copies. ";
   ers::info(ProgressUpdate(ERS_HERE, get_name(), oss_summ.str()));
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_work() method";
 }

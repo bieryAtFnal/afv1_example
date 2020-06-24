@@ -65,7 +65,6 @@ private:
   std::chrono::milliseconds queueTimeout_;
   size_t nIntsPerList_;
   size_t waitBetweenSendsMsec_;
-  std::vector<std::string> outputQueueNames_;
 
   const size_t REASONABLE_DEFAULT_INTSPERLIST = 4;
   const size_t REASONABLE_DEFAULT_MSECBETWEENSENDS = 1000;

@@ -32,7 +32,6 @@ ListReverser::ListReverser(const std::string& name)
   , inputQueue_(nullptr)
   , outputQueue_(nullptr)
   , queueTimeout_(100)
-  , outputQueueName_("undefined")
 {
   register_command("start", &ListReverser::do_start);
   register_command("stop", &ListReverser::do_stop);
@@ -51,10 +50,9 @@ ListReverser::init()
     throw InvalidQueueFatalError(ERS_HERE, get_name(), "input", excpt);
   }
 
-  outputQueueName_ = get_config()["output"].get<std::string>();
   try
   {
-    outputQueue_.reset(new dunedaq::appfwk::DAQSink<std::vector<int>>(outputQueueName_));
+    outputQueue_.reset(new dunedaq::appfwk::DAQSink<std::vector<int>>(get_config()["output"].get<std::string>()));
   }
   catch (const ers::Issue& excpt)
   {
@@ -146,7 +144,7 @@ ListReverser::do_work()
       catch (const dunedaq::appfwk::QueueTimeoutExpired& excpt)
       {
         std::ostringstream oss_warn;
-        oss_warn << "push to output queue \"" << outputQueueName_ << "\"";
+        oss_warn << "push to output queue \"" << outputQueue_->get_name() << "\"";
         ers::warning(dunedaq::appfwk::QueueTimeoutExpired(ERS_HERE, get_name(), oss_warn.str(),
                      std::chrono::duration_cast<std::chrono::milliseconds>(queueTimeout_).count()));
       }
@@ -156,7 +154,7 @@ ListReverser::do_work()
 
   std::ostringstream oss_summ;
   oss_summ << ": Exiting do_work() method, received " << receivedCount
-           << " lists, and successfully sent " << sentCount << ". ";
+           << " lists and successfully sent " << sentCount << ". ";
   ers::info(ProgressUpdate(ERS_HERE, get_name(), oss_summ.str()));
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting do_work() method";
 }

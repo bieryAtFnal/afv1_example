@@ -64,7 +64,6 @@ private:
   std::unique_ptr<dunedaq::appfwk::DAQSource<std::vector<int>>> inputQueue_;
   std::unique_ptr<dunedaq::appfwk::DAQSink<std::vector<int>>> outputQueue_;
   std::chrono::milliseconds queueTimeout_;
-  std::string outputQueueName_;
 };
 } // namespace afv1_example
 } // namespace dunedaq
