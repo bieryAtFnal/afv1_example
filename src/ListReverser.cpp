@@ -48,11 +48,7 @@ ListReverser::init()
   }
   catch (const ers::Issue& excpt)
   {
-    ers::error(excpt);
-  }
-  if (inputQueue_.get() == nullptr)
-  {
-    throw InvalidQueueFatalError(ERS_HERE, get_name(), "input");
+    throw InvalidQueueFatalError(ERS_HERE, get_name(), "input", excpt);
   }
 
   outputQueueName_ = get_config()["output"].get<std::string>();
@@ -62,11 +58,7 @@ ListReverser::init()
   }
   catch (const ers::Issue& excpt)
   {
-    ers::error(excpt);
-  }
-  if (outputQueue_.get() == nullptr)
-  {
-    throw InvalidQueueFatalError(ERS_HERE, get_name(), "output");
+    throw InvalidQueueFatalError(ERS_HERE, get_name(), "output", excpt);
   }
 
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting init() method";

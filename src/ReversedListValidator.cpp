@@ -49,11 +49,7 @@ ReversedListValidator::init()
   }
   catch (const ers::Issue& excpt)
   {
-    ers::error(excpt);
-  }
-  if (reversedDataQueue_.get() == nullptr)
-  {
-    throw InvalidQueueFatalError(ERS_HERE, get_name(), "reversed data input");
+    throw InvalidQueueFatalError(ERS_HERE, get_name(), "reversed data input", excpt);
   }
 
   try
@@ -62,11 +58,7 @@ ReversedListValidator::init()
   }
   catch (const ers::Issue& excpt)
   {
-    ers::error(excpt);
-  }
-  if (originalDataQueue_.get() == nullptr)
-  {
-    throw InvalidQueueFatalError(ERS_HERE, get_name(), "original data input");
+    throw InvalidQueueFatalError(ERS_HERE, get_name(), "original data input", excpt);
   }
 
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting init() method";

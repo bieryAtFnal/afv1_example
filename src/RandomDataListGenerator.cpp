@@ -55,8 +55,7 @@ void RandomDataListGenerator::init()
     }
     catch (const ers::Issue& excpt)
     {
-      ers::error(excpt);
-      throw InvalidQueueFatalError(ERS_HERE, get_name(), outputQueueName);
+      throw InvalidQueueFatalError(ERS_HERE, get_name(), outputQueueName, excpt);
     }
   }
   TLOG(TLVL_ENTER_EXIT_METHODS) << get_name() << ": Exiting init() method";
