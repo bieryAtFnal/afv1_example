@@ -18,4 +18,7 @@ target_link_libraries(afv1_example_RandomDataListGenerator_duneDAQModule Folly::
 add_library(afv1_example_ReversedListValidator_duneDAQModule src/ReversedListValidator.cpp)
 target_link_libraries(afv1_example_ReversedListValidator_duneDAQModule Folly::folly)
 
-file(COPY src/list_reversal_app.json DESTINATION src)
+##############################################################################
+point_build_to( test )
+
+file(COPY test/list_reversal_app.json DESTINATION test)
