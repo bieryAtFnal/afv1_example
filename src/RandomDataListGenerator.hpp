@@ -60,14 +60,15 @@ private:
   dunedaq::appfwk::ThreadHelper thread_;
   void do_work(std::atomic<bool>&);
 
+  // Configuration defaults
+  const size_t REASONABLE_DEFAULT_INTSPERLIST = 4;
+  const size_t REASONABLE_DEFAULT_MSECBETWEENSENDS = 1000;
+
   // Configuration
   std::vector<std::unique_ptr<dunedaq::appfwk::DAQSink<std::vector<int>>>> outputQueues_;
   std::chrono::milliseconds queueTimeout_;
-  size_t nIntsPerList_;
-  size_t waitBetweenSendsMsec_;
-
-  const size_t REASONABLE_DEFAULT_INTSPERLIST = 4;
-  const size_t REASONABLE_DEFAULT_MSECBETWEENSENDS = 1000;
+  size_t nIntsPerList_ = REASONABLE_DEFAULT_INTSPERLIST;
+  size_t waitBetweenSendsMsec_ = REASONABLE_DEFAULT_MSECBETWEENSENDS;
 };
 } // namespace afv1_example
 
